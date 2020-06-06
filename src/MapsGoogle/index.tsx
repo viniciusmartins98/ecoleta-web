@@ -31,7 +31,7 @@ const Map: React.FC<MapProperties> = (props) => {
 
     return (
         <LoadScript
-            googleMapsApiKey="AIzaSyCaGiSd2GVPw6ICVDIRAaft2SwOBS6P1mk"
+            googleMapsApiKey={process.env.REACT_APP_API_KEY}
         >
             <GoogleMap 
                 center={props.initialPosition}
