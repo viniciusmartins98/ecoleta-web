@@ -141,10 +141,12 @@ const CreatePoint = () => {
         if(selectedFile) {
             data.append('image', selectedFile);
         }
-
-        await api.post('points', data);
-
-        alert('Ponto de coleta criado!');
+        try {
+           const response = await api.post('points', data);
+        } catch (error) {
+            alert(error);
+        }
+            alert('Ponto de coleta criado!');
 
         history.push('/');
     }
