@@ -7,6 +7,8 @@ import axios from 'axios';
 
 import './styles.css'
 
+import Dropzone from '../../components/Dropzone';
+
 import logo from '../../assets/logo.svg';
 
 
@@ -34,6 +36,7 @@ const CreatePoint = () => {
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [selectedPosition, setSelectedPosition] = useState({lat: 20, lng: 20});
     const [initialPosition, setInitialPosition] = useState({lat: 20, lng: 20});
+    const [selectedFile, setSelectedFile] = useState<File>();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -125,16 +128,19 @@ const CreatePoint = () => {
         const {lat, lng} = selectedPosition;
         const items = selectedItems;
 
-        const data = {
-            name,
-            email,
-            whatsapp,
-            uf,
-            city,
-            latitude: lat,
-            longitude: lng,
-            items
-        };
+        const data = new FormData();
+
+        data.append('name', name);
+        data.append('email', email);
+        data.append('whatsapp', whatsapp);
+        data.append('uf', uf);
+        data.append('city', city);
+        data.append('latitude', String(lat));
+        data.append('longitude', String(lng));
+        data.append('items', items.join(','));
+        if(selectedFile) {
+            data.append('image', selectedFile);
+        }
 
         await api.post('points', data);
 
@@ -157,6 +163,8 @@ const CreatePoint = () => {
 
             <form onSubmit={handleSubmit}>
                 <h1>Cadastro do <br/> ponto de coleta</h1>
+
+                <Dropzone onFileUploaded={setSelectedFile}/>
 
                 <fieldset>
                     <legend>
